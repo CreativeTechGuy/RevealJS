@@ -8,7 +8,7 @@
 
 ------
 
-This library is designed to be plug and play. Simply download and include the [Reveal.css](dist/Reveal.css) and [Reveal.js](dist/Reveal.js) file on your page and set some tags in the HTML and the rest is taken care of auto-magically.
+This library is designed to be plug and play. Simply [download](https://github.com/CreativeTechGuy/RevealJS/releases) and include the `Reveal.css` and `Reveal.js` file on your page and set some tags in the HTML and the rest is taken care of auto-magically.
 
 ## Basic Usage
 
