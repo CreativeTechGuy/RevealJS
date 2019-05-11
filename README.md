@@ -2,8 +2,6 @@
 
 ## A simple JavaScript image comparison library
 
-------
-
 ![Demo Gif](demo.gif)
 
 ------
