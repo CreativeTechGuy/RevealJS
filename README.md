@@ -34,10 +34,21 @@ Once the page is loaded, the script will automatically find all of the `.reveal`
 
 ## Advanced usage
 
-The API is very straight forward. You can call `Reveal.init()` and pass in a DOM element to initialize that reveal element. Make sure it still has the `class="reveal"` in the HTML!
+You can call `Reveal.init()` and pass in a DOM element to initialize that reveal element. Make sure it still has the `class="reveal"` in the HTML!
 
 ```js
 Reveal.init(document.getElementById("newRevealItem"));
+```
+
+If you want to add your custom behaviors when the reveal bar is updated, you can add an event to listen to `Reveal.onupdate`. There are two pieces of data passed to this event listener.
+
+* `elem`: A reference to the DOM node of the container for the current reveal.
+* `percent`: A value from 0-100 to represent where the slider is currently located. 0 is left, 100 is right.
+
+```js
+Reveal.onupdate = function(data) {
+    // Your code here
+};
 ```
 
 ## Browser Support

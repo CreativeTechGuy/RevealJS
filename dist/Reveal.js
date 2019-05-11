@@ -6,6 +6,33 @@
 		}
 	});
 
+	document.addEventListener("touchmove", drag, {
+		passive: false
+	});
+	document.addEventListener("mousemove", drag);
+	document.addEventListener("touchend", stop);
+	document.addEventListener("mouseup", stop);
+
+	function drag(evt) {
+		if (!window.Reveal.currentDrag) {
+			return;
+		}
+		evt.preventDefault();
+		var x = evt.clientX;
+		if (evt.touches && evt.touches.length > 0) {
+			x = evt.touches[0].clientX;
+		}
+		window.Reveal.currentDrag.x = x;
+		window.Reveal.currentDrag.divider = (Math.max(window.Reveal.currentDrag.rect.left, Math.min(window.Reveal.currentDrag.rect.right, x)) - window.Reveal.currentDrag.rect.left) / window.Reveal.currentDrag.rect.width;
+		window.Reveal.currentDrag.update();
+	}
+	function stop() {
+		if (window.Reveal.currentDrag) {
+			window.Reveal.currentDrag.update(true);
+			window.Reveal.currentDrag = null;
+		}
+	}
+
 	function init(elem) {
 		if (elem.className.indexOf("reveal-loaded") !== -1) {
 			return;
@@ -16,8 +43,8 @@
 			divider: 0.5,
 			lastX: -1000,
 			x: 0,
-			dragging: false,
-			rect: elem.getBoundingClientRect()
+			rect: elem.getBoundingClientRect(),
+			update: update
 		};
 
 		var supportsClipPath = true;
@@ -37,42 +64,24 @@
 		update(true);
 		revealBar.addEventListener("touchstart", start);
 		revealBar.addEventListener("mousedown", start);
-		document.addEventListener("touchmove", drag, {
-			passive: false
-		});
-		document.addEventListener("mousemove", drag);
-		document.addEventListener("touchend", stop);
-		document.addEventListener("mouseup", stop);
 		elem.appendChild(revealBar);
 
 		function start() {
 			state.dragging = true;
 			state.rect = elem.getBoundingClientRect();
-		}
-		function drag(evt) {
-			if (!state.dragging) {
-				return;
-			}
-			evt.preventDefault();
-			var x = evt.clientX;
-			if (evt.touches && evt.touches.length > 0) {
-				x = evt.touches[0].clientX;
-			}
-			state.x = x;
-			state.divider = (Math.max(state.rect.left, Math.min(state.rect.right, x)) - state.rect.left) / state.rect.width;
-			update();
-		}
-		function stop() {
-			if (state.dragging) {
-				update(true);
-			}
-			state.dragging = false;
+			window.Reveal.currentDrag = state;
 		}
 		function update(force) {
 			var percent = state.divider * 100;
 			revealBar.style.left = percent + "%";
 			if (Math.abs(state.x - state.lastX) < 5 && !force) {
 				return;
+			}
+			if (window.Reveal.onupdate) {
+				window.Reveal.onupdate({
+					elem: elem,
+					percent: percent
+				});
 			}
 			state.lastX = state.x;
 			if (!supportsClipPath) {
@@ -84,7 +93,9 @@
 	}
 
 	window.Reveal = {
-		init: init
+		currentDrag: null,
+		init: init,
+		onupdate: null
 	};
 
 	function createRevealBar() {
