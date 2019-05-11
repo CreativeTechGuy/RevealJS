@@ -2,7 +2,7 @@
 
 ## A simple JavaScript image comparison library
 
-## [Live Demo](https://creativetechguy.github.io/RevealJS/demo)
+## [Live Demo](https://creativetechguy.github.io/RevealJS/demo/)
 
 ![Demo Gif](demo/demo.gif)
 
