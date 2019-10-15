@@ -67,7 +67,6 @@
 		elem.appendChild(revealBar);
 
 		function start() {
-			state.dragging = true;
 			state.rect = elem.getBoundingClientRect();
 			window.Reveal.currentDrag = state;
 		}
